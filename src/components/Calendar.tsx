@@ -142,7 +142,7 @@ export default function Calendar() {
     return (
       <div className="flex justify-between items-center mb-6 px-2">
         <div className="flex items-center gap-2">
-          <button onClick={prevMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <button onClick={prevMonth} className="p-2 rounded-full hover:bg-white/50 dark:hover:bg-white/10 transition-colors">
             <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </button>
           <button 
@@ -151,7 +151,7 @@ export default function Calendar() {
               setCurrentDate(today);
               setSelectedDate(today);
             }}
-            className="px-3 py-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-colors"
+            className="px-3 py-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50/80 dark:hover:bg-indigo-900/40 rounded-lg transition-colors"
           >
             Hôm nay
           </button>
@@ -159,7 +159,7 @@ export default function Calendar() {
         <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 capitalize">
           {format(currentDate, 'MMMM yyyy', { locale: vi })}
         </h2>
-        <button onClick={nextMonth} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+        <button onClick={nextMonth} className="p-2 rounded-full hover:bg-white/50 dark:hover:bg-white/10 transition-colors">
           <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
         </button>
       </div>
@@ -222,12 +222,12 @@ export default function Calendar() {
               "relative flex flex-col items-center justify-center p-1 h-14 cursor-pointer transition-all rounded-xl",
               !isCurrentMonth && "opacity-40",
               isSelected
-                ? "bg-indigo-600 text-white shadow-md shadow-indigo-200 dark:shadow-none"
+                ? "bg-indigo-600 text-white shadow-md shadow-indigo-500/30 dark:shadow-none"
                 : isCurrentDay
-                ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400"
+                ? "bg-indigo-50/80 text-indigo-600 dark:bg-indigo-900/40 dark:text-indigo-400"
                 : hasHoliday
-                ? "bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/20"
-                : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-zinc-900",
+                ? "bg-red-50/80 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100/80 dark:hover:bg-red-900/30"
+                : "text-gray-700 dark:text-gray-200 hover:bg-white/50 dark:hover:bg-white/10",
               isSelected && "font-semibold"
             )}
           >
@@ -271,7 +271,7 @@ export default function Calendar() {
 
     return (
       <div className="mt-6 space-y-4">
-        <div className="p-5 bg-gray-50 dark:bg-zinc-900/50 rounded-2xl border border-gray-100 dark:border-zinc-800">
+        <div className="p-5 bg-white/40 dark:bg-white/5 backdrop-blur-md rounded-2xl border border-white/50 dark:border-white/10">
           <div className="flex items-start justify-between">
             <div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white capitalize">
@@ -315,14 +315,14 @@ export default function Calendar() {
           </div>
         </div>
 
-        <div className="p-4 bg-indigo-50/50 dark:bg-indigo-900/10 rounded-2xl border border-indigo-100/50 dark:border-indigo-900/20">
+        <div className="p-4 bg-indigo-50/50 dark:bg-indigo-900/20 backdrop-blur-md rounded-2xl border border-white/50 dark:border-white/10">
           <h4 className="text-sm font-semibold text-indigo-900 dark:text-indigo-300 mb-2">Giờ Hoàng Đạo</h4>
           <p className="text-sm text-indigo-700 dark:text-indigo-400 leading-relaxed">
             {auspicious_hours.replace(/\n/g, ' ')}
           </p>
         </div>
 
-        <div className="p-4 bg-amber-50/50 dark:bg-amber-900/10 rounded-2xl border border-amber-100/50 dark:border-amber-900/20">
+        <div className="p-4 bg-amber-50/50 dark:bg-amber-900/20 backdrop-blur-md rounded-2xl border border-white/50 dark:border-white/10">
           <p className="text-sm italic text-amber-800 dark:text-amber-400 text-center font-medium">
             "{proverb}"
           </p>
@@ -344,7 +344,7 @@ export default function Calendar() {
     return (
       <div className="flex flex-col items-center animate-in fade-in duration-300">
         <div className="flex justify-between items-center w-full mb-6 px-2">
-          <button onClick={() => setSelectedDate(subDays(selectedDate, 1))} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-900 transition-colors">
+          <button onClick={() => setSelectedDate(subDays(selectedDate, 1))} className="p-2 rounded-full hover:bg-white/50 dark:hover:bg-white/10 transition-colors">
             <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </button>
           <button 
@@ -353,18 +353,18 @@ export default function Calendar() {
               setCurrentDate(today);
               setSelectedDate(today);
             }}
-            className="px-3 py-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 rounded-lg transition-colors"
+            className="px-3 py-1 text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:bg-indigo-50/80 dark:hover:bg-indigo-900/40 rounded-lg transition-colors"
           >
             Hôm nay
           </button>
-          <button onClick={() => setSelectedDate(addDays(selectedDate, 1))} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-900 transition-colors">
+          <button onClick={() => setSelectedDate(addDays(selectedDate, 1))} className="p-2 rounded-full hover:bg-white/50 dark:hover:bg-white/10 transition-colors">
             <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </button>
         </div>
 
         {/* Lịch Block */}
-        <div className="w-full max-w-sm bg-white dark:bg-zinc-900 rounded-[2rem] shadow-xl border border-gray-100 dark:border-zinc-800 overflow-hidden mb-6">
-          <div className="bg-red-600 dark:bg-red-700 text-white text-center py-4">
+        <div className="w-full max-w-sm bg-white/60 dark:bg-black/40 backdrop-blur-xl rounded-[2rem] shadow-xl border border-white/50 dark:border-white/10 overflow-hidden mb-6">
+          <div className="bg-red-600/90 dark:bg-red-700/90 backdrop-blur-md text-white text-center py-4 border-b border-white/20">
             <h2 className="text-xl font-bold uppercase tracking-widest">
               Tháng {format(selectedDate, 'M')}
             </h2>
@@ -400,7 +400,7 @@ export default function Calendar() {
               </div>
             </div>
           </div>
-          <div className="bg-gray-50 dark:bg-zinc-900/50 p-4 border-t border-gray-100 dark:border-zinc-800 text-center space-y-2">
+          <div className="bg-white/40 dark:bg-white/5 backdrop-blur-md p-4 border-t border-white/50 dark:border-white/10 text-center space-y-2">
             <p className="text-sm text-gray-700 dark:text-gray-300">
               Ngày <span className="font-semibold">{can_chi.day}</span>, tháng <span className="font-semibold">{can_chi.month}</span>, năm <span className="font-semibold">{can_chi.year}</span>
             </p>
@@ -411,14 +411,14 @@ export default function Calendar() {
         </div>
 
         <div className="w-full space-y-4">
-          <div className="p-4 bg-indigo-50/50 dark:bg-indigo-900/10 rounded-2xl border border-indigo-100/50 dark:border-indigo-900/20">
+          <div className="p-4 bg-indigo-50/50 dark:bg-indigo-900/20 backdrop-blur-md rounded-2xl border border-white/50 dark:border-white/10">
             <h4 className="text-sm font-semibold text-indigo-900 dark:text-indigo-300 mb-2">Giờ Hoàng Đạo</h4>
             <p className="text-sm text-indigo-700 dark:text-indigo-400 leading-relaxed">
               {auspicious_hours.replace(/\n/g, ' ')}
             </p>
           </div>
 
-          <div className="p-4 bg-amber-50/50 dark:bg-amber-900/10 rounded-2xl border border-amber-100/50 dark:border-amber-900/20">
+          <div className="p-4 bg-amber-50/50 dark:bg-amber-900/20 backdrop-blur-md rounded-2xl border border-white/50 dark:border-white/10">
             <p className="text-sm italic text-amber-800 dark:text-amber-400 text-center font-medium">
               "{proverb}"
             </p>
@@ -429,11 +429,11 @@ export default function Calendar() {
   };
 
   return (
-    <div className="max-w-md mx-auto w-full bg-white dark:bg-black min-h-screen sm:min-h-fit sm:rounded-[2rem] sm:shadow-2xl sm:border border-gray-200 dark:border-zinc-800 overflow-hidden">
+    <div className="max-w-md mx-auto w-full bg-white/60 dark:bg-black/40 backdrop-blur-xl min-h-screen sm:min-h-fit sm:rounded-[2rem] sm:shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] sm:border border-white/40 dark:border-white/10 overflow-hidden">
       <div className="p-5 sm:p-8">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
-            <div className="p-2 bg-indigo-50 dark:bg-indigo-900/30 rounded-xl">
+            <div className="p-2 bg-indigo-50/80 dark:bg-indigo-900/40 backdrop-blur-sm rounded-xl">
               <CalendarIcon className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
             </div>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">Lịch Việt</h1>
@@ -441,14 +441,14 @@ export default function Calendar() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setViewMode(viewMode === 'month' ? 'day' : 'month')}
-              className="p-2 rounded-xl bg-gray-100 dark:bg-zinc-900 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors"
+              className="p-2 rounded-xl bg-white/50 dark:bg-white/5 backdrop-blur-sm text-gray-600 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-white/10 transition-colors border border-white/20 dark:border-white/5"
               aria-label="Toggle view mode"
             >
               {viewMode === 'month' ? <CalendarDays className="w-5 h-5" /> : <LayoutGrid className="w-5 h-5" />}
             </button>
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 rounded-xl bg-gray-100 dark:bg-zinc-900 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors"
+              className="p-2 rounded-xl bg-white/50 dark:bg-white/5 backdrop-blur-sm text-gray-600 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-white/10 transition-colors border border-white/20 dark:border-white/5"
               aria-label="Toggle dark mode"
             >
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
