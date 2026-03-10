@@ -54,6 +54,25 @@ export default function Calendar() {
     }
   }, [isDarkMode]);
 
+  // Tự động cập nhật ngày khi qua 00:00 (nửa đêm)
+  useEffect(() => {
+    const now = new Date();
+    const tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    const timeUntilMidnight = tomorrow.getTime() - now.getTime();
+
+    const timer = setTimeout(() => {
+      const newDate = new Date();
+      // Chỉ tự động chuyển ngày nếu người dùng đang xem tháng hiện tại
+      // và ngày đang chọn là "hôm nay" của ngày cũ
+      if (isSameMonth(currentDate, now) && isSameDay(selectedDate, now)) {
+        setCurrentDate(newDate);
+        setSelectedDate(newDate);
+      }
+    }, timeUntilMidnight + 1000); // Thêm 1 giây để đảm bảo đã qua ngày mới
+
+    return () => clearTimeout(timer);
+  }, [currentDate, selectedDate]);
+
   const nextMonth = () => setCurrentDate(addMonths(currentDate, 1));
   const prevMonth = () => setCurrentDate(subMonths(currentDate, 1));
   const onDateClick = (day: Date) => setSelectedDate(day);
