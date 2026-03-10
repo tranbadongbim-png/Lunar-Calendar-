@@ -227,7 +227,7 @@ export default function Calendar() {
                 ? "bg-indigo-50 text-indigo-600 dark:bg-indigo-900/30 dark:text-indigo-400"
                 : hasHoliday
                 ? "bg-red-50 dark:bg-red-900/10 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/20"
-                : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800",
+                : "text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-zinc-900",
               isSelected && "font-semibold"
             )}
           >
@@ -271,7 +271,7 @@ export default function Calendar() {
 
     return (
       <div className="mt-6 space-y-4">
-        <div className="p-5 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800">
+        <div className="p-5 bg-gray-50 dark:bg-zinc-900/50 rounded-2xl border border-gray-100 dark:border-zinc-800">
           <div className="flex items-start justify-between">
             <div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white capitalize">
@@ -344,7 +344,7 @@ export default function Calendar() {
     return (
       <div className="flex flex-col items-center animate-in fade-in duration-300">
         <div className="flex justify-between items-center w-full mb-6 px-2">
-          <button onClick={() => setSelectedDate(subDays(selectedDate, 1))} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <button onClick={() => setSelectedDate(subDays(selectedDate, 1))} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-900 transition-colors">
             <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </button>
           <button 
@@ -357,13 +357,13 @@ export default function Calendar() {
           >
             Hôm nay
           </button>
-          <button onClick={() => setSelectedDate(addDays(selectedDate, 1))} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+          <button onClick={() => setSelectedDate(addDays(selectedDate, 1))} className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-zinc-900 transition-colors">
             <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </button>
         </div>
 
         {/* Lịch Block */}
-        <div className="w-full max-w-sm bg-white dark:bg-gray-800 rounded-[2rem] shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden mb-6">
+        <div className="w-full max-w-sm bg-white dark:bg-zinc-900 rounded-[2rem] shadow-xl border border-gray-100 dark:border-zinc-800 overflow-hidden mb-6">
           <div className="bg-red-600 dark:bg-red-700 text-white text-center py-4">
             <h2 className="text-xl font-bold uppercase tracking-widest">
               Tháng {format(selectedDate, 'M')}
@@ -400,7 +400,7 @@ export default function Calendar() {
               </div>
             </div>
           </div>
-          <div className="bg-gray-50 dark:bg-gray-800/50 p-4 border-t border-gray-100 dark:border-gray-700 text-center space-y-2">
+          <div className="bg-gray-50 dark:bg-zinc-900/50 p-4 border-t border-gray-100 dark:border-zinc-800 text-center space-y-2">
             <p className="text-sm text-gray-700 dark:text-gray-300">
               Ngày <span className="font-semibold">{can_chi.day}</span>, tháng <span className="font-semibold">{can_chi.month}</span>, năm <span className="font-semibold">{can_chi.year}</span>
             </p>
@@ -429,7 +429,7 @@ export default function Calendar() {
   };
 
   return (
-    <div className="max-w-md mx-auto w-full bg-white dark:bg-gray-900 min-h-screen sm:min-h-fit sm:rounded-[2rem] sm:shadow-2xl sm:border border-gray-200 dark:border-gray-800 overflow-hidden">
+    <div className="max-w-md mx-auto w-full bg-white dark:bg-black min-h-screen sm:min-h-fit sm:rounded-[2rem] sm:shadow-2xl sm:border border-gray-200 dark:border-zinc-800 overflow-hidden">
       <div className="p-5 sm:p-8">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-3">
@@ -441,14 +441,14 @@ export default function Calendar() {
           <div className="flex items-center gap-2">
             <button
               onClick={() => setViewMode(viewMode === 'month' ? 'day' : 'month')}
-              className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-xl bg-gray-100 dark:bg-zinc-900 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors"
               aria-label="Toggle view mode"
             >
               {viewMode === 'month' ? <CalendarDays className="w-5 h-5" /> : <LayoutGrid className="w-5 h-5" />}
             </button>
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
-              className="p-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+              className="p-2 rounded-xl bg-gray-100 dark:bg-zinc-900 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-zinc-800 transition-colors"
               aria-label="Toggle dark mode"
             >
               {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
