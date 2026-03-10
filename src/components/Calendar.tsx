@@ -99,8 +99,6 @@ export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [viewMode, setViewMode] = useState<'month' | 'day'>('day');
-  const [events, setEvents] = useState<Record<string, string[]>>({});
-  const [newEventText, setNewEventText] = useState('');
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       return document.documentElement.classList.contains('dark') || 
@@ -213,7 +211,6 @@ export default function Calendar() {
         const isCurrentMonth = isSameMonth(day, monthStart);
         const isCurrentDay = isToday(day);
         const dateKey = format(day, 'yyyy-MM-dd');
-        const hasEvents = events[dateKey] && events[dateKey].length > 0;
         const holidays = getHolidays(day, lunarDate.day, lunarDate.month, lunarDate.year);
         const hasHoliday = holidays.length > 0;
 
@@ -247,12 +244,6 @@ export default function Calendar() {
             )}>
               {lunarText}
             </span>
-            {hasEvents && (
-              <div className={clsx(
-                "absolute top-1 right-1 w-1.5 h-1.5 rounded-full",
-                isSelected ? "bg-white" : "bg-indigo-500"
-              )} />
-            )}
           </div>
         );
         day = addDays(day, 1);
@@ -437,82 +428,6 @@ export default function Calendar() {
     );
   };
 
-  const handleAddEvent = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newEventText.trim()) return;
-
-    const dateKey = format(selectedDate, 'yyyy-MM-dd');
-    setEvents(prev => ({
-      ...prev,
-      [dateKey]: [...(prev[dateKey] || []), newEventText.trim()]
-    }));
-    setNewEventText('');
-  };
-
-  const handleDeleteEvent = (dateKey: string, index: number) => {
-    setEvents(prev => {
-      const newEvents = [...(prev[dateKey] || [])];
-      newEvents.splice(index, 1);
-      return {
-        ...prev,
-        [dateKey]: newEvents
-      };
-    });
-  };
-
-  const renderEvents = () => {
-    const dateKey = format(selectedDate, 'yyyy-MM-dd');
-    const dayEvents = events[dateKey] || [];
-
-    return (
-      <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-800 animate-in fade-in duration-300">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
-          <ListTodo className="w-5 h-5 text-indigo-500" />
-          Ghi chú ngày {format(selectedDate, 'dd/MM/yyyy')}
-        </h3>
-        
-        <form onSubmit={handleAddEvent} className="flex gap-2 mb-4">
-          <input
-            type="text"
-            value={newEventText}
-            onChange={(e) => setNewEventText(e.target.value)}
-            placeholder="Thêm ghi chú mới..."
-            className="flex-1 px-3 py-2 text-sm rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
-          />
-          <button
-            type="submit"
-            disabled={!newEventText.trim()}
-            className="p-2 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            <Plus className="w-5 h-5" />
-          </button>
-        </form>
-
-        <div className="space-y-2">
-          {dayEvents.length === 0 ? (
-            <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
-              Không có ghi chú nào cho ngày này.
-            </p>
-          ) : (
-            dayEvents.map((event, index) => (
-              <div key={index} className="flex items-start justify-between gap-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700/50 group">
-                <p className="text-sm text-gray-700 dark:text-gray-300 flex-1 break-words">
-                  {event}
-                </p>
-                <button
-                  onClick={() => handleDeleteEvent(dateKey, index)}
-                  className="text-gray-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  <X className="w-4 h-4" />
-                </button>
-              </div>
-            ))
-          )}
-        </div>
-      </div>
-    );
-  };
-
   return (
     <div className="max-w-md mx-auto w-full bg-white dark:bg-gray-900 min-h-screen sm:min-h-fit sm:rounded-[2rem] sm:shadow-2xl sm:border border-gray-200 dark:border-gray-800 overflow-hidden">
       <div className="p-5 sm:p-8">
@@ -551,8 +466,6 @@ export default function Calendar() {
         ) : (
           renderDayView()
         )}
-        
-        {renderEvents()}
         
         <div className="mt-8 text-center space-y-1">
           <p className="text-xs text-gray-400 dark:text-gray-500">
