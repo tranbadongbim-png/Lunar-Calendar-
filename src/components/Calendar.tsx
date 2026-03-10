@@ -275,6 +275,15 @@ export default function Calendar() {
         {renderDays()}
         {renderCells()}
         {renderDetails()}
+        
+        <div className="mt-8 text-center space-y-1">
+          <p className="text-xs text-gray-400 dark:text-gray-500">
+            &copy; {new Date().getFullYear()} Lịch Việt
+          </p>
+          <p className="text-[10px] text-gray-400/80 dark:text-gray-500/80">
+            Design by Dong
+          </p>
+        </div>
       </div>
     </div>
   );
