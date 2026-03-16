@@ -98,7 +98,7 @@ const getHolidays = (solarDate: Date, lunarDay: number, lunarMonth: number, luna
 export default function Calendar() {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [viewMode, setViewMode] = useState<'month' | 'day'>('day');
+  const [viewMode, setViewMode] = useState<'month' | 'day' | 'year'>('day');
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
       return document.documentElement.classList.contains('dark') || 
@@ -136,13 +136,16 @@ export default function Calendar() {
 
   const nextMonth = () => setCurrentDate(addMonths(currentDate, 1));
   const prevMonth = () => setCurrentDate(subMonths(currentDate, 1));
+  const nextYear = () => setCurrentDate(addMonths(currentDate, 12));
+  const prevYear = () => setCurrentDate(subMonths(currentDate, 12));
   const onDateClick = (day: Date) => setSelectedDate(day);
 
   const renderHeader = () => {
+    const isYearView = viewMode === 'year';
     return (
       <div className="flex justify-between items-center mb-6 px-2">
         <div className="flex items-center gap-2">
-          <button onClick={prevMonth} className="p-2 rounded-full hover:bg-white/50 dark:hover:bg-white/10 transition-colors">
+          <button onClick={isYearView ? prevYear : prevMonth} className="p-2 rounded-full hover:bg-white/50 dark:hover:bg-white/10 transition-colors">
             <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-300" />
           </button>
           <button 
@@ -156,10 +159,13 @@ export default function Calendar() {
             Hôm nay
           </button>
         </div>
-        <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100 capitalize">
-          {format(currentDate, 'MMMM yyyy', { locale: vi })}
+        <h2 
+          className="text-lg font-semibold text-gray-800 dark:text-gray-100 capitalize cursor-pointer hover:text-indigo-600 transition-colors"
+          onClick={() => setViewMode(isYearView ? 'month' : 'year')}
+        >
+          {isYearView ? format(currentDate, 'yyyy') : format(currentDate, 'MMMM yyyy', { locale: vi })}
         </h2>
-        <button onClick={nextMonth} className="p-2 rounded-full hover:bg-white/50 dark:hover:bg-white/10 transition-colors">
+        <button onClick={isYearView ? nextYear : nextMonth} className="p-2 rounded-full hover:bg-white/50 dark:hover:bg-white/10 transition-colors">
           <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-300" />
         </button>
       </div>
@@ -428,6 +434,83 @@ export default function Calendar() {
     );
   };
 
+  const renderMiniMonth = (monthDate: Date) => {
+    const monthStart = startOfMonth(monthDate);
+    const monthEnd = endOfMonth(monthStart);
+    const startDate = startOfWeek(monthStart, { weekStartsOn: 1 });
+    const endDate = endOfWeek(monthEnd, { weekStartsOn: 1 });
+
+    const days = [];
+    let day = startDate;
+
+    while (day <= endDate) {
+      const cloneDay = day;
+      const isCurrentMonth = isSameMonth(day, monthStart);
+      const isCurrentDay = isToday(day);
+      const isSelected = isSameDay(day, selectedDate);
+
+      days.push(
+        <div
+          key={day.toString()}
+          onClick={() => {
+            if (isCurrentMonth) {
+              setSelectedDate(cloneDay);
+              setCurrentDate(cloneDay);
+              setViewMode('day');
+            }
+          }}
+          className={clsx(
+            "text-[9px] h-5 flex items-center justify-center rounded-sm transition-colors",
+            isCurrentMonth ? "cursor-pointer" : "opacity-0 pointer-events-none",
+            isCurrentMonth && isSelected && "bg-indigo-600 text-white font-bold",
+            isCurrentMonth && !isSelected && isCurrentDay && "bg-indigo-100 text-indigo-600 dark:bg-indigo-900/50 dark:text-indigo-400 font-bold",
+            isCurrentMonth && !isSelected && !isCurrentDay && "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-white/10"
+          )}
+        >
+          {isCurrentMonth ? format(day, 'd') : ''}
+        </div>
+      );
+      day = addDays(day, 1);
+    }
+    return days;
+  };
+
+  const renderYearView = () => {
+    const year = currentDate.getFullYear();
+    const months = [];
+    for (let i = 0; i < 12; i++) {
+      const monthDate = new Date(year, i, 1);
+      months.push(
+        <div key={i} className="flex flex-col items-center">
+          <h3 
+            className="text-sm font-semibold text-gray-800 dark:text-gray-200 mb-2 cursor-pointer hover:text-indigo-600 transition-colors"
+            onClick={() => {
+              setCurrentDate(monthDate);
+              setViewMode('month');
+            }}
+          >
+            Tháng {i + 1}
+          </h3>
+          <div className="grid grid-cols-7 gap-x-0.5 gap-y-0.5 w-full max-w-[140px]">
+            {['T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'CN'].map(d => (
+              <div key={d} className="text-[8px] text-center text-gray-400 font-medium mb-1">{d}</div>
+            ))}
+            {renderMiniMonth(monthDate)}
+          </div>
+        </div>
+      );
+    }
+    
+    return (
+      <div className="animate-in fade-in duration-300">
+        {renderHeader()}
+        <div className="grid grid-cols-3 gap-x-2 gap-y-6">
+          {months}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="max-w-md mx-auto w-full bg-white/60 dark:bg-black/40 backdrop-blur-xl min-h-screen sm:min-h-fit sm:rounded-[2rem] sm:shadow-[0_8px_32px_0_rgba(31,38,135,0.15)] sm:border border-white/40 dark:border-white/10 overflow-hidden">
       <div className="p-5 sm:p-8">
@@ -440,11 +523,11 @@ export default function Calendar() {
           </div>
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setViewMode(viewMode === 'month' ? 'day' : 'month')}
+              onClick={() => setViewMode(viewMode === 'day' ? 'month' : viewMode === 'month' ? 'year' : 'day')}
               className="p-2 rounded-xl bg-white/50 dark:bg-white/5 backdrop-blur-sm text-gray-600 dark:text-gray-300 hover:bg-white/80 dark:hover:bg-white/10 transition-colors border border-white/20 dark:border-white/5"
               aria-label="Toggle view mode"
             >
-              {viewMode === 'month' ? <CalendarDays className="w-5 h-5" /> : <LayoutGrid className="w-5 h-5" />}
+              {viewMode === 'day' ? <CalendarDays className="w-5 h-5" /> : viewMode === 'month' ? <LayoutGrid className="w-5 h-5" /> : <ListTodo className="w-5 h-5" />}
             </button>
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
@@ -456,7 +539,9 @@ export default function Calendar() {
           </div>
         </div>
         
-        {viewMode === 'month' ? (
+        {viewMode === 'year' ? (
+          renderYearView()
+        ) : viewMode === 'month' ? (
           <div className="animate-in fade-in duration-300">
             {renderHeader()}
             {renderDays()}
